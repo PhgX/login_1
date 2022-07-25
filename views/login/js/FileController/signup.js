@@ -212,4 +212,4 @@ function SignUpAccount(req, res) {
     });
   }
 
-  module.exports = SignUpAccount;
+  module.exports.SignUpAccount = SignUpAccount;
