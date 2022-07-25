@@ -8,9 +8,7 @@ function LoginControl(req, res) {
     let data = "";
     req.on("data", (chunk) => (data += chunk));
     req.on("end", () => {
-      let logindata = qs.parse(data);
-      // console.log("da vao phan login");
-      // console.log(logindata);
+      let logindata = qs.parse(data);     
       let stringUserName = logindata.username.toString();
       let userquery = `select * from users where username = '${stringUserName}' and password = '${logindata.password}';`;
   
@@ -29,7 +27,8 @@ function LoginControl(req, res) {
                   console.log(err);
                 } else {
                   res.writeHead(200, { "Content-Type": "text/html" });
-                  let text = `<p>Tài khoản không tồn tại hoặc nhập sai mật khẩu</p>`;
+                  
+                  let text = `<p style="text-align: center; color: white; font-size: 30px">Tài khoản không tồn tại hoặc nhập sai mật khẩu</p>`;
                   data = data.replace('{here}', text);
                   res.write(data);
                   return res.end();
@@ -39,6 +38,7 @@ function LoginControl(req, res) {
           } else {
             let rolequery = `select ur.role_id from users u join userrole ur on u.id = ur.user_id where username = '${stringUserName}' and password = '${logindata.password}';`;
             connection.query(rolequery, (err, data) => {
+              console.log(parseData);
               if (err) {
                 console.log(err);
               } else {
@@ -49,7 +49,7 @@ function LoginControl(req, res) {
                 let role = roleData.role_id;
                 if (role === 1) {
                   console.log('Tài khoản Admin');
-  
+
                 } else if (role === 2) {
                   console.log('Tài khoản User');
                   
